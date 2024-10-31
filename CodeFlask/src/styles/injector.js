@@ -12,7 +12,7 @@ export function injectCss (css, styleName, parent) {
 
   const style = document.createElement('style')
 
-  style.innerHTML = css
+  style.innerText = css
   style.id = CSS_ID
   PARENT.appendChild(style)
 
