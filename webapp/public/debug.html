@@ -1,37 +1,36 @@
 <!doctype html>
 <html>
-<head lang='en'>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width'>
+  <head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>Debug</title>
 
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            font-weight: 300;
-        }
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+        font-weight: 300;
+      }
 
-        .code-window {
-            border-radius: 0.8rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
-            background: #fff;
-            width: 662px;
-        }
+      .code-window {
+        border-radius: 0.8rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+        background: #fff;
+        width: 662px;
+      }
 
-        .code-editor {
-            position: relative;
-            width: 100%;
-            height: 500px;
-        }
+      .code-editor {
+        position: relative;
+        width: 100%;
+        height: 500px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="code-window">
+      <div class="code-editor"></div>
+    </div>
 
-<div class="code-window">
-    <div class="code-editor"></div>
-</div>
-
-<script type="module" src='module/debug.js'></script>
-</body>
+    <script type="module" src="module/debug.js"></script>
+  </body>
 </html>

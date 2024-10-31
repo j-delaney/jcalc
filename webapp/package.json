@@ -5,7 +5,8 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "dev": "npm-run-all --parallel start watch",
-    "start": "serve public"
+    "start": "serve public",
+    "fmt": "prettier . --write"
   },
   "dependencies": {
     "codeflask": "file:../CodeFlask",
@@ -17,6 +18,7 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "npm-run-all": "^4.1.5",
+    "prettier": "3.3.3",
     "rollup": "^4.24.3",
     "serve": "^14.2.4"
   }
