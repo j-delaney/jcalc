@@ -68,6 +68,8 @@ export function decompress(s) {
       return decompressBase64(s.substring(1));
     case "1":
       return decompressLZ(s.substring(1));
+    case "2":
+      return decompressURL(s.substring(1));
     default:
       throw new Error("unknown compression version " + s[0]);
   }

@@ -1,4 +1,4 @@
-import { create, all, Unit } from "mathjs";
+import { create, all } from "mathjs";
 import CodeFlask from "codeflask";
 
 const config = {
@@ -12,3 +12,6 @@ const flask = new CodeFlask(".code-editor", {
   lineNumbers: true,
   rightSidebar: true,
 });
+console.log(flask.getCode());
+
+console.log(math.evaluate("1+1"));

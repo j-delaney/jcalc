@@ -1,4 +1,4 @@
-import { create, all, Unit } from "mathjs";
+import { create, all } from "mathjs";
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.js";
 import { sanitizeLine } from "./identifier.js";
@@ -20,17 +20,6 @@ math.createUnit({
     aliases: ["usd", "dollar", "dollars", "$"],
   },
 });
-
-function isUnit(unit) {
-  try {
-    new Unit(5, unit);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
-const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
 
 // TODO: "as percent of"
 // TODO: "to percent"
