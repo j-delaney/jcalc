@@ -7,11 +7,15 @@ import terser from '@rollup/plugin-terser';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-    input: 'src/main.js',
+    input: ['src/main.js', 'src/debug.js'],
     output: {
-        file: 'public/bundle.js',
-        format: 'iife', // immediately-invoked function expression — suitable for <script> tags
-        sourcemap: true
+        dir: 'public/module/',
+        format: 'es',
+        sourcemap: true,
+        manualChunks: {
+            'vendor.mathjs': ['mathjs'],
+            'vendor.codeflask': ['codeflask']
+        },
     },
     plugins: [
         resolve(), // tells Rollup how to find date-fns in node_modules
