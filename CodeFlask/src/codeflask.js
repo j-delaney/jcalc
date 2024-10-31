@@ -2,6 +2,7 @@ import { editorCss } from './styles/editor'
 import { injectCss } from './styles/injector'
 import { defaultCssTheme } from './styles/theme-default'
 import { escapeHtml } from './utils/html-escape'
+import DOMPurify from 'dompurify'
 import Prism from 'prismjs'
 
 export default class CodeFlask {
@@ -190,7 +191,7 @@ export default class CodeFlask {
   listenTextarea () {
     this.elTextarea.addEventListener('input', (e) => {
       this.code = e.target.value
-      this.elCode.innerHTML = escapeHtml(e.target.value)
+      this.elCode.innerHTML = DOMPurify.sanitize(e.target.value)
       this.highlight()
       setTimeout(() => {
         this.updateLines()
@@ -422,7 +423,7 @@ export default class CodeFlask {
   updateCode (newCode) {
     this.code = newCode
     this.elTextarea.value = newCode
-    this.elCode.innerHTML = escapeHtml(newCode)
+    this.elCode.innerHTML = DOMPurify.sanitize(newCode)
     this.highlight()
     this.updateLines()
     this.setLineNumber()
