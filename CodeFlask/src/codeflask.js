@@ -58,7 +58,7 @@ export default class CodeFlask {
 
   createWrapper () {
     this.code = this.editorRoot.innerHTML
-    this.editorRoot.innerHTML = ''
+    this.editorRoot.replaceChildren()
     this.elWrapper = this.createElement('div', this.editorRoot)
     this.elWrapper.classList.add('codeflask')
   }
@@ -164,17 +164,19 @@ export default class CodeFlask {
   }
 
   updateLineNumbersCount () {
-    let numberList = ''
-
+    const newChildren = []
     for (let i = 1; i <= this.lineCount; i++) {
-      numberList = numberList + `<span class="codeflask__lines__line">${i}</span>`
+      const elem = document.createElement('span')
+      elem.innerText = `${i}`
+      elem.classList.add('codeflask__lines__line')
+      newChildren.push(elem)
     }
 
-    this.elLineNumbers.innerHTML = numberList
+    this.elLineNumbers.replaceChildren(...newChildren)
   }
 
   updateRightSidebarCount () {
-    this.elRightSidebar.innerHTML = ''
+    this.elRightSidebar.replaceChildren()
     this.elRightSidebarLines = []
 
     for (let i = 1; i <= this.lineCount; i++) {
