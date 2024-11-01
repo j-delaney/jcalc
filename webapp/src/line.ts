@@ -1,8 +1,5 @@
 const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
-
-// (data rate * 3) to MB/s
-
-export function transformLine(line: string): string {
+function multiWordVariables(line: string): string {
   const reResults = line.match(variableRegex);
   if (!reResults) {
     return line;
@@ -32,3 +29,11 @@ export function transformLine(line: string): string {
   });
   return line;
 }
+
+export function transformLine(line: string): string {
+  return multiWordVariables(line);
+}
+
+export const exportedForTesting = {
+  multiWordVariables,
+};
