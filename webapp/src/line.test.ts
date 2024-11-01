@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { sanitizeLine } from "./identifier.ts";
+import { sanitizeLine } from "./line.ts";
 
 describe("type conversion using to", () => {
   test("between two variables", () => {

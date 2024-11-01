@@ -1,7 +1,7 @@
 import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
-import { sanitizeLine } from "./identifier.ts";
+import { sanitizeLine } from "./line.ts";
 import { setupUnits } from "./units.ts";
 
 const config: ConfigOptions = {
