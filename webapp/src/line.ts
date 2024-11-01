@@ -2,7 +2,7 @@ const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
 
 // (data rate * 3) to MB/s
 
-export function sanitizeLine(line: string): string {
+export function transformLine(line: string): string {
   const reResults = line.match(variableRegex);
   if (!reResults) {
     return line;
@@ -12,7 +12,7 @@ export function sanitizeLine(line: string): string {
     const parts = result.split(" to ", 2);
     if (parts.length === 2) {
       const replacement =
-        sanitizeLine(parts[0]) + " to " + sanitizeLine(parts[1]);
+        transformLine(parts[0]) + " to " + transformLine(parts[1]);
       line = line.replace(result, replacement);
     } else {
       if (result.startsWith("to ")) {
@@ -22,7 +22,7 @@ export function sanitizeLine(line: string): string {
         // "total cost to $/year"
         line = line.replace(
           result,
-          sanitizeLine(result.split(" to", 1)[0]) + " to",
+          transformLine(result.split(" to", 1)[0]) + " to",
         );
         return;
       }

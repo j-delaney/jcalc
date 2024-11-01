@@ -1,7 +1,7 @@
 import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
-import { sanitizeLine } from "./line.ts";
+import { transformLine } from "./line.ts";
 import { setupUnits } from "./units.ts";
 
 const config: ConfigOptions = {
@@ -35,7 +35,7 @@ flask.onUpdate((lines) => {
 
     // TODO: remove commas between numbers
 
-    line = sanitizeLine(lines[i]);
+    line = transformLine(lines[i]);
     try {
       const r = parser.evaluate(line);
       if (r) {
