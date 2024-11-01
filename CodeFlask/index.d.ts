@@ -26,7 +26,7 @@ export default class CodeFlask {
   updateLanguage(newLanguage: string): void
   addLanguage(name: string, options: LanguageDefinition): void
 
-  elRightSidebarLines: Node[];
+  elRightSidebarLines: HTMLElement[];
 
   getCode(): string
   onUpdate(callback: (lines: string[]) => void): void

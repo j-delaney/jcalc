@@ -50,11 +50,9 @@ flask.onUpdate((lines) => {
       if (r) {
         // TODO: better formatting of output
         console.log({ line, r });
-        // @ts-expect-error need to fix export type in codeflask
         flask.elRightSidebarLines[i].innerText = r.toString();
       }
     } catch (e) {
-      // @ts-expect-error need to fix export type in codeflask
       flask.elRightSidebarLines[i].innerText = e.message;
     }
   }
