@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import { exportedForTesting } from "./line.ts";
 
-const { multiWordVariables } = exportedForTesting;
+const { multiWordVariables, numberWithCommas } = exportedForTesting;
 
 describe("multiWordVariables", () => {
   test.each([
@@ -38,5 +38,34 @@ describe("multiWordVariables", () => {
     },
   ])("multiWordVariables($line)", ({ line, expected }) => {
     expect(multiWordVariables(line)).toBe(expected);
+  });
+});
+
+describe("numberWithCommas", () => {
+  test.each([
+    { line: "", expected: "" },
+    { line: "1", expected: "1" },
+    { line: "1,234", expected: "1234" },
+    { line: "1,2", expected: "12" },
+    { line: "x = 413,300", expected: "x = 413300" },
+    { line: "x =1,2", expected: "x =12" },
+    { line: "x = 413,300.00", expected: "x = 413300.00" },
+    { line: "12,", expected: "12" },
+    { line: "1234523", expected: "1234523" },
+    { line: "1 + 12", expected: "1 + 12" },
+    { line: "1,234+4,321", expected: "1234+4321" },
+    { line: "1 + 12,", expected: "1 + 12" },
+    { line: "1st", expected: "1st" },
+    { line: "a12b", expected: "a12b" },
+    { line: "a12", expected: "a12" },
+    { line: "a12,34,45", expected: "a12,3445" }, // Not great but at least is an error
+    { line: "3.0", expected: "3.0" },
+    { line: "3.00949,4", expected: "3.009494" },
+    { line: "43.123,434", expected: "43.123434" },
+    { line: "12,345-1,2,3,4", expected: "12345-1234" },
+    { line: "1,234e27", expected: "1234e27" },
+    { line: "1,234.567", expected: "1234.567" },
+  ])("multiWordVariables($line)", ({ line, expected }) => {
+    expect(numberWithCommas(line)).toBe(expected);
   });
 });

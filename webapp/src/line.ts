@@ -30,10 +30,20 @@ function multiWordVariables(line: string): string {
   return line;
 }
 
+const commaNumberRegex = /\b\d[\d,]+/g;
+
+function numberWithCommas(line: string): string {
+  return line.replaceAll(commaNumberRegex, (match) => {
+    return match.replaceAll(",", "");
+  });
+}
+
 export function transformLine(line: string): string {
+  line = numberWithCommas(line);
   return multiWordVariables(line);
 }
 
 export const exportedForTesting = {
   multiWordVariables,
+  numberWithCommas,
 };
