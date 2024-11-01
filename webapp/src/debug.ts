@@ -1,7 +1,7 @@
-import { create, all } from "mathjs";
+import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
 
-const config = {
+const config: ConfigOptions = {
   number: "BigNumber",
   // Number of significant digits for BigNumbers
   // precision: 20

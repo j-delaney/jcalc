@@ -1,9 +1,9 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import tsEslint from "typescript-eslint";
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tsEslint.config(
   {
     ignores: [
       "public/module/", // Generated code
@@ -12,5 +12,6 @@ export default [
   },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
+  ...tsEslint.configs.recommended,
   eslintConfigPrettier,
-];
+);

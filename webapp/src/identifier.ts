@@ -2,7 +2,7 @@ const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
 
 // (data rate * 3) to MB/s
 
-export function sanitizeLine(line) {
+export function sanitizeLine(line: string): string {
   const reResults = line.match(variableRegex);
   if (!reResults) {
     return line;

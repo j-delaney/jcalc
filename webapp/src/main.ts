@@ -1,9 +1,9 @@
-import { create, all } from "mathjs";
+import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
-import { compress, decompress } from "./compress.js";
-import { sanitizeLine } from "./identifier.js";
+import { compress, decompress } from "./compress.ts";
+import { sanitizeLine } from "./identifier.ts";
 
-const config = {
+const config: ConfigOptions = {
   number: "BigNumber",
   // Number of significant digits for BigNumbers
   // precision: 20
@@ -50,21 +50,23 @@ flask.onUpdate((lines) => {
       if (r) {
         // TODO: better formatting of output
         console.log({ line, r });
+        // @ts-expect-error need to fix export type in codeflask
         flask.elRightSidebarLines[i].innerText = r.toString();
       }
     } catch (e) {
+      // @ts-expect-error need to fix export type in codeflask
       flask.elRightSidebarLines[i].innerText = e.message;
     }
   }
 });
 
-let hash = window.location.hash;
+const hash = window.location.hash;
 if (hash !== "") {
   const code = decompress(hash.substring(1));
   flask.updateCode(code);
 }
 
 // TODO: some indicator of unsaved work?
-document.querySelector("#save").addEventListener("click", () => {
+document.querySelector("#save")?.addEventListener("click", () => {
   window.location.hash = compress(flask.getCode());
 });
