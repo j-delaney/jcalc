@@ -7,6 +7,8 @@ describe("multiWordVariables", () => {
   test.each([
     { line: "hello", expected: "hello" },
     { line: "", expected: "" },
+    // Not sure yet what we want to do about this
+    // { line: "x 1 2 e", expected: "x 1 2 e" },
     { line: "x = y", expected: "x = y" },
     { line: "foo bar = baz", expected: "foo_bar = baz" },
     { line: "foo bar = baz bin", expected: "foo_bar = baz_bin" },
