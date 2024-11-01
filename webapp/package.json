@@ -7,7 +7,8 @@
     "dev": "npm-run-all --parallel start watch",
     "start": "serve public",
     "fmt": "prettier . --write",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest"
   },
   "dependencies": {
     "codeflask": "file:../CodeFlask",
@@ -15,20 +16,28 @@
     "mathjs": "^13.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
     "@eslint/js": "^8.57.1",
+    "@jest/globals": "^29.7.0",
+    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
     "@types/eslint__js": "^8.42.3",
     "@types/mathjs": "^9.4.1",
+    "babel-jest": "^29.7.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.11.0",
+    "jest": "^29.7.0",
     "npm-run-all": "^4.1.5",
     "prettier": "3.3.3",
     "rollup": "^4.24.3",
     "serve": "^14.2.4",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
     "typescript": "5.5.4",
     "typescript-eslint": "^7.18.0"
