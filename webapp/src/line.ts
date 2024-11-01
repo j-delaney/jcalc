@@ -31,19 +31,32 @@ function multiWordVariables(line: string): string {
 }
 
 const commaNumberRegex = /\b\d[\d,]+/g;
-
 function numberWithCommas(line: string): string {
   return line.replaceAll(commaNumberRegex, (match) => {
     return match.replaceAll(",", "");
   });
 }
 
+const prefixCurrencyRegex = /\B(\$)(\d+\.\d+|\.\d+|\d+)\b/g;
+// Transform cases where the currency symbol is used as a prefix to it being used as a suffix. e.g. "$5" -> "5$".
+// Assumes that commas have already been removed from numbers.
+function prefixCurrency(line: string): string {
+  return line.replaceAll(
+    prefixCurrencyRegex,
+    (match, currencySymbol: string, num: string) => {
+      return num + currencySymbol;
+    },
+  );
+}
+
 export function transformLine(line: string): string {
   line = numberWithCommas(line);
+  line = prefixCurrency(line);
   return multiWordVariables(line);
 }
 
 export const exportedForTesting = {
   multiWordVariables,
   numberWithCommas,
+  prefixCurrency,
 };

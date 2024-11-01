@@ -1,7 +1,8 @@
 import { describe, expect, test } from "@jest/globals";
 import { exportedForTesting } from "./line.ts";
 
-const { multiWordVariables, numberWithCommas } = exportedForTesting;
+const { multiWordVariables, numberWithCommas, prefixCurrency } =
+  exportedForTesting;
 
 describe("multiWordVariables", () => {
   test.each([
@@ -69,5 +70,29 @@ describe("numberWithCommas", () => {
     { line: "1,234.567", expected: "1234.567" },
   ])("multiWordVariables($line)", ({ line, expected }) => {
     expect(numberWithCommas(line)).toBe(expected);
+  });
+});
+
+describe("prefixCurrency", () => {
+  test.each([
+    { line: "$foo", expected: "$foo" },
+    { line: "$12a", expected: "$12a" },
+    { line: "$1234", expected: "1234$" },
+    { line: "$1.23", expected: "1.23$" },
+    { line: "$12", expected: "12$" },
+    { line: "$", expected: "$" },
+    { line: "$.12", expected: ".12$" },
+    { line: "$0.12", expected: "0.12$" },
+    { line: "$12.34", expected: "12.34$" },
+    { line: "a$23", expected: "a$23" },
+    { line: "($12)", expected: "(12$)" },
+    { line: "-$12+$14-4", expected: "-12$+14$-4" },
+    { line: "$12+$2", expected: "12$+2$" },
+    { line: "$ 5", expected: "$ 5" },
+    { line: "12.3$", expected: "12.3$" },
+    // TODO: Doesn't work but maybe it should?
+    // { line: "$(12)", expected: "(12)$" },
+  ])("multiWordVariables($line)", ({ line, expected }) => {
+    expect(prefixCurrency(line)).toBe(expected);
   });
 });
