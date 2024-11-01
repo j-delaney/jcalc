@@ -2,6 +2,7 @@ import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
 import { sanitizeLine } from "./identifier.ts";
+import { setupUnits } from "./units.ts";
 
 const config: ConfigOptions = {
   number: "BigNumber",
@@ -9,17 +10,7 @@ const config: ConfigOptions = {
   // precision: 20
 };
 const math = create(all, config);
-
-const isAlphaOriginal = math.Unit.isValidAlpha;
-math.Unit.isValidAlpha = function (c) {
-  return isAlphaOriginal(c) || ["$"].includes(c);
-};
-math.createUnit({
-  USD: {
-    prefixes: "none",
-    aliases: ["usd", "dollar", "dollars", "$"],
-  },
-});
+setupUnits(math);
 
 // TODO: "as percent of"
 // TODO: "to percent"
@@ -53,7 +44,9 @@ flask.onUpdate((lines) => {
         flask.elRightSidebarLines[i].innerText = r.toString();
       }
     } catch (e) {
-      flask.elRightSidebarLines[i].innerText = e.message;
+      if (e instanceof Error) {
+        flask.elRightSidebarLines[i].innerText = e.message;
+      }
     }
   }
 });
