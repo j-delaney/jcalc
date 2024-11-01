@@ -1,4 +1,5 @@
 const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
+
 function multiWordVariables(line: string): string {
   const reResults = line.match(variableRegex);
   if (!reResults) {
@@ -31,6 +32,7 @@ function multiWordVariables(line: string): string {
 }
 
 const commaNumberRegex = /\b\d[\d,]+/g;
+
 function numberWithCommas(line: string): string {
   return line.replaceAll(commaNumberRegex, (match) => {
     return match.replaceAll(",", "");
@@ -49,7 +51,18 @@ function prefixCurrency(line: string): string {
   );
 }
 
+const commentRegex = /\/\/.*$/;
+function stripCommentsAndHeaders(line: string): string {
+  // Completely clear lines that are headers or comments
+  if (line.startsWith("//") || line.startsWith("#")) {
+    return "";
+  }
+
+  return line.replace(commentRegex, "");
+}
+
 export function transformLine(line: string): string {
+  line = stripCommentsAndHeaders(line);
   line = numberWithCommas(line);
   line = prefixCurrency(line);
   return multiWordVariables(line);
@@ -59,4 +72,5 @@ export const exportedForTesting = {
   multiWordVariables,
   numberWithCommas,
   prefixCurrency,
+  stripCommentsAndHeaders,
 };

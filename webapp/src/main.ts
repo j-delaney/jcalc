@@ -26,14 +26,7 @@ flask.onUpdate((lines) => {
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
 
-    // Ignore comments and headers
-    // TODO: comments at end of line
     // TODO: syntax highlighting for headers
-    if (line.startsWith("//") || line.startsWith("#")) {
-      continue;
-    }
-
-    // TODO: remove commas between numbers
 
     line = transformLine(lines[i]);
     try {

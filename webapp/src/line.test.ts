@@ -1,8 +1,12 @@
 import { describe, expect, test } from "@jest/globals";
 import { exportedForTesting } from "./line.ts";
 
-const { multiWordVariables, numberWithCommas, prefixCurrency } =
-  exportedForTesting;
+const {
+  multiWordVariables,
+  numberWithCommas,
+  prefixCurrency,
+  stripCommentsAndHeaders,
+} = exportedForTesting;
 
 describe("multiWordVariables", () => {
   test.each([
@@ -68,7 +72,7 @@ describe("numberWithCommas", () => {
     { line: "12,345-1,2,3,4", expected: "12345-1234" },
     { line: "1,234e27", expected: "1234e27" },
     { line: "1,234.567", expected: "1234.567" },
-  ])("multiWordVariables($line)", ({ line, expected }) => {
+  ])("numberWithCommas($line)", ({ line, expected }) => {
     expect(numberWithCommas(line)).toBe(expected);
   });
 });
@@ -92,7 +96,26 @@ describe("prefixCurrency", () => {
     { line: "12.3$", expected: "12.3$" },
     // TODO: Doesn't work but maybe it should?
     // { line: "$(12)", expected: "(12)$" },
-  ])("multiWordVariables($line)", ({ line, expected }) => {
+  ])("prefixCurrency($line)", ({ line, expected }) => {
     expect(prefixCurrency(line)).toBe(expected);
+  });
+});
+
+describe("stripCommentsAndHeaders", () => {
+  test.each([
+    { line: "//", expected: "" },
+    { line: "// ", expected: "" },
+    { line: "// hello", expected: "" },
+    { line: "// hello // there", expected: "" },
+    { line: "hello //", expected: "hello " },
+    { line: "hello // there", expected: "hello " },
+    { line: "one two // three //", expected: "one two " },
+    { line: "#", expected: "" },
+    { line: "#This", expected: "" },
+    { line: "# This", expected: "" },
+    { line: "##This", expected: "" },
+    { line: "## This", expected: "" },
+  ])("stripCommentsAndHeaders($line)", ({ line, expected }) => {
+    expect(stripCommentsAndHeaders(line)).toBe(expected);
   });
 });
