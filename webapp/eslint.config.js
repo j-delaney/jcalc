@@ -11,6 +11,10 @@ export default tsEslint.config(
     ],
   },
   { languageOptions: { globals: globals.browser } },
+  {
+    files: ["scripts/**/*.ts"],
+    languageOptions: { globals: globals.node },
+  },
   pluginJs.configs.recommended,
   ...tsEslint.configs.recommended,
   eslintConfigPrettier,
