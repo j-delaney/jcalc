@@ -4,7 +4,7 @@ import { cssSupports } from '../utils/css-supports'
 const FONT_FAMILY = `"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace`
 const COLOR = (cssSupports('caret-color', '#000')) ? BACKGROUND_COLOR : '#ccc'
 const LINE_NUMBER_WIDTH = '40px'
-const RIGHT_SIDEBAR_WIDTH = '100px'
+const RIGHT_SIDEBAR_WIDTH = '120px'
 
 export const editorCss = `
   .codeflask {
@@ -159,6 +159,7 @@ export const editorCss = `
     width: ${RIGHT_SIDEBAR_WIDTH};
     height: 100%;
     background: #eee;
+    border-left: 1px #ddd solid;
     z-index: 4;
   }
 `
