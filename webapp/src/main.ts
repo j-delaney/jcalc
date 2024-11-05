@@ -35,6 +35,8 @@ flask.onUpdate((lines) => {
         // TODO: better formatting of output
         console.log({ line, r });
         flask.elRightSidebarLines[i].innerText = r.toString();
+      } else {
+        flask.elRightSidebarLines[i].innerText = "";
       }
     } catch (e) {
       if (e instanceof Error) {
