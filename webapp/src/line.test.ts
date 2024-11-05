@@ -43,6 +43,8 @@ describe("multiWordVariables", () => {
       line: "subset str = substr str rate",
       expected: "subset_str = substr_str_rate",
     },
+    // Failing:
+    // { line: "x bytes", expected: "x bytes" },
   ])("multiWordVariables($line)", ({ line, expected }) => {
     expect(multiWordVariables(line)).toBe(expected);
   });
