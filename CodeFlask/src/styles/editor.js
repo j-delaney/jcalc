@@ -111,6 +111,10 @@ export const editorCss = `
     -webkit-user-select: all;
     user-select: all;
     white-space: nowrap;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   
   .codeflask__right-sidebar {
