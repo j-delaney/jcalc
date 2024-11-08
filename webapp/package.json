@@ -7,6 +7,7 @@
     "dev": "npm-run-all --parallel start watch",
     "start": "serve public",
     "fmt": "prettier . --write",
+    "fmt-check": "prettier --check .",
     "lint": "eslint .",
     "test": "jest"
   },
