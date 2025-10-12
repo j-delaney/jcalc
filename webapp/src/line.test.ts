@@ -85,6 +85,7 @@ describe("prefixCurrency", () => {
     { line: "$12a", expected: "$12a" },
     { line: "$1234", expected: "1234$" },
     { line: "$1.23", expected: "1.23$" },
+    { line: "1.23$", expected: "1.23$" },
     { line: "$12", expected: "12$" },
     { line: "$", expected: "$" },
     { line: "$.12", expected: ".12$" },
@@ -96,6 +97,7 @@ describe("prefixCurrency", () => {
     { line: "$12+$2", expected: "12$+2$" },
     { line: "$ 5", expected: "$ 5" },
     { line: "12.3$", expected: "12.3$" },
+    { line: "-$12.34", expected: "-12.34$" },
     // TODO: Doesn't work but maybe it should?
     // { line: "$(12)", expected: "(12)$" },
   ])("prefixCurrency($line)", ({ line, expected }) => {
