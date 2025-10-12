@@ -48,11 +48,6 @@ export function compress(s: string): string {
   const uri = compressURL(s);
 
   const minLength = Math.min(base64.length, lz.length, uri.length);
-  console.log({
-    base64: base64.length,
-    lz: lz.length,
-    uri: uri.length,
-  });
   if (base64.length === minLength) {
     return base64;
   }
