@@ -44,6 +44,8 @@ flask.onUpdate((lines) => {
       }
     }
   }
+
+  updateSaveButton();
 });
 
 const hash = window.location.hash;
@@ -52,7 +54,37 @@ if (hash !== "") {
   flask.updateCode(code);
 }
 
-// TODO: some indicator of unsaved work?
+function hasUnsavedChanges(): boolean {
+  const currentCode = flask.getCode();
+  const currentHash = window.location.hash;
+  if (currentHash === "") {
+    return currentCode.trim() !== "";
+  }
+  return compress(currentCode) !== currentHash.substring(1);
+}
+
+function updateSaveButton() {
+  const saveBtn = document.querySelector("#save");
+  if (saveBtn) {
+    if (hasUnsavedChanges()) {
+      saveBtn.textContent = "Save *";
+      saveBtn.classList.add("unsaved");
+    } else {
+      saveBtn.textContent = "Save";
+      saveBtn.classList.remove("unsaved");
+    }
+  }
+}
+
 document.querySelector("#save")?.addEventListener("click", () => {
   window.location.hash = compress(flask.getCode());
+  savedCode = flask.getCode();
+  updateSaveButton();
+});
+
+window.addEventListener("beforeunload", (e) => {
+  if (hasUnsavedChanges()) {
+    e.preventDefault();
+    return "";
+  }
 });
