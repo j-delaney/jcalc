@@ -1,5 +1,42 @@
-const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
+import { all, ConfigOptions, create } from "mathjs";
+import { setupUnits } from "./units.ts";
 
+const config: ConfigOptions = {
+  number: "BigNumber",
+  // Number of significant digits for BigNumbers
+  // precision: 20
+};
+const math = create(all, config);
+setupUnits(math);
+
+export function evaluateLines(lines: string[]): string[] {
+  const parser = math.parser();
+  const results: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    line = transformLine(line);
+
+    try {
+      const r = parser.evaluate(line);
+      if (r) {
+        results.push(r.toString());
+      } else {
+        results.push("");
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        results.push(e.message);
+      } else {
+        results.push("<unknown error>");
+      }
+    }
+  }
+
+  return results;
+}
+
+const variableRegex = /[a-zA-Z][\w ]* [\w ]*\w/g;
 function multiWordVariables(line: string): string {
   const reResults = line.match(variableRegex);
   if (!reResults) {

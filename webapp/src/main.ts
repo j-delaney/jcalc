@@ -1,16 +1,6 @@
-import { create, all, ConfigOptions } from "mathjs";
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
-import { transformLine } from "./line.ts";
-import { setupUnits } from "./units.ts";
-
-const config: ConfigOptions = {
-  number: "BigNumber",
-  // Number of significant digits for BigNumbers
-  // precision: 20
-};
-const math = create(all, config);
-setupUnits(math);
+import { evaluateLines } from "./line.ts";
 
 // TODO: "as percent of"
 // TODO: "to percent"
@@ -27,29 +17,9 @@ function saveCode() {
 }
 
 flask.onUpdate((lines) => {
-  const parser = math.parser();
-
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-
-    // TODO: syntax highlighting for headers
-
-    line = transformLine(lines[i]);
-    try {
-      const r = parser.evaluate(line);
-      if (r) {
-        // TODO: better formatting of output
-        console.log({ line, r });
-        flask.elRightSidebarLines[i].innerText = r.toString();
-      } else {
-        flask.elRightSidebarLines[i].innerText = "";
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        flask.elRightSidebarLines[i].innerText = e.message;
-      }
-    }
-  }
+  evaluateLines(lines).forEach((result, i) => {
+    flask.elRightSidebarLines[i].innerText = result;
+  });
 
   const autosaveCheckbox = document.querySelector(
     "#autosave",
@@ -113,3 +83,7 @@ window.addEventListener("beforeunload", (e) => {
     return "";
   }
 });
+
+export const exportedForTesting = {
+  evaluateLines,
+};

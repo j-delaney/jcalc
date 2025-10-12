@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { exportedForTesting } from "./line.ts";
+import { evaluateLines, exportedForTesting } from "./line.ts";
 
 const {
   multiWordVariables,
@@ -119,5 +119,37 @@ describe("stripCommentsAndHeaders", () => {
     { line: "## This", expected: "" },
   ])("stripCommentsAndHeaders($line)", ({ line, expected }) => {
     expect(stripCommentsAndHeaders(line)).toBe(expected);
+  });
+});
+
+describe("evaluateLines", () => {
+  test.each([
+    {
+      name: "empty",
+      lines: [],
+      expected: [],
+    },
+    {
+      name: "simple assignment",
+      lines: ["x = 1"],
+      expected: ["1"],
+    },
+    {
+      name: "simple addition",
+      lines: ["1 + 2"],
+      expected: ["3"],
+    },
+    {
+      name: "simple variable usage",
+      lines: ["x = 2", "y = 3", "z = x * y", "z"],
+      expected: ["2", "3", "6", "6"],
+    },
+    {
+      name: "comments have no output",
+      lines: ["x = 2", "// comment", "y = 3", "z = x * y", "z"],
+      expected: ["2", "", "3", "6", "6"],
+    },
+  ])("$name", ({ lines, expected }) => {
+    expect(evaluateLines(lines)).toEqual(expected);
   });
 });
