@@ -20,6 +20,12 @@ const flask = new CodeFlask(".code-editor", {
   lineNumbers: true,
   rightSidebar: true,
 });
+
+function saveCode() {
+  window.location.hash = compress(flask.getCode());
+  updateSaveButton();
+}
+
 flask.onUpdate((lines) => {
   const parser = math.parser();
 
@@ -45,13 +51,34 @@ flask.onUpdate((lines) => {
     }
   }
 
-  updateSaveButton();
+  const autosaveCheckbox = document.querySelector(
+    "#autosave",
+  ) as HTMLInputElement;
+  if (autosaveCheckbox?.checked) {
+    saveCode();
+  } else {
+    updateSaveButton();
+  }
 });
 
 const hash = window.location.hash;
 if (hash !== "") {
   const code = decompress(hash.substring(1));
   flask.updateCode(code);
+}
+
+const autosaveCheckbox = document.querySelector(
+  "#autosave",
+) as HTMLInputElement;
+if (autosaveCheckbox) {
+  const savedAutosave = localStorage.getItem("autosave");
+  if (savedAutosave === "true") {
+    autosaveCheckbox.checked = true;
+  }
+
+  autosaveCheckbox.addEventListener("change", () => {
+    localStorage.setItem("autosave", autosaveCheckbox.checked.toString());
+  });
 }
 
 function hasUnsavedChanges(): boolean {
@@ -77,9 +104,7 @@ function updateSaveButton() {
 }
 
 document.querySelector("#save")?.addEventListener("click", () => {
-  window.location.hash = compress(flask.getCode());
-  savedCode = flask.getCode();
-  updateSaveButton();
+  saveCode();
 });
 
 window.addEventListener("beforeunload", (e) => {
