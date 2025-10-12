@@ -14,18 +14,23 @@ export function evaluateLines(lines: string[]): string[] {
   const results: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-    line = transformLine(line);
+    if (lines[i] === "") {
+      results.push("");
+      continue;
+    }
+    const line = transformLine(lines[i]);
 
     try {
       const r = parser.evaluate(line);
+      console.log(i, lines[i], line, r);
       if (r) {
-        results.push(r.toString());
+        results.push(math.format(r, { fraction: "decimal" }));
       } else {
         results.push("");
       }
     } catch (e) {
       if (e instanceof Error) {
+        console.log(i, lines[i], line, e);
         results.push(e.message);
       } else {
         results.push("<unknown error>");
