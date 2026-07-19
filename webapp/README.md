@@ -24,7 +24,9 @@ The calculator is built on [math.js](https://mathjs.org/), configured to use `Bi
 
 `src/units.ts` registers a custom `USD` unit (aliases: `$`, `usd`, `dollar`, `dollars`) and patches `math.Unit.isValidAlpha` so `$` is accepted in unit expressions, enabling arithmetic across currency and other units.
 
-Each line's result is fed back into CodeFlask's right sidebar via `onUpdate`, one line at a time. `src/units.ts`'s unit list also drives `scripts/generate-unit-regex.ts`, a benchmarking script exploring regex strategies for matching unit names/prefixes (not currently wired into the app).
+Each evaluated line's raw math.js result (a `BigNumber`, `Unit`, etc.) is turned into a display string by `formatOutput` (`src/output.ts`) before being fed back into CodeFlask's right sidebar via `onUpdate`, one line at a time. Formatting is centralized there intentionally, as the intended home for future output-formatting improvements — e.g. rendering `Unit` results with a prefix currency symbol (`$50`) instead of math.js's default suffix style (`50 $`).
+
+`src/units.ts`'s unit list also drives `scripts/generate-unit-regex.ts`, a benchmarking script exploring regex strategies for matching unit names/prefixes (not currently wired into the app).
 
 ## Persistence
 There's no backend. The editor's contents are compressed and stored in the URL hash (`src/compress.ts`), which tries three encodings (base64, LZ-string, URL-encoding) and keeps whichever is shortest. Saving is manual via the Save button, or automatic if the Autosave checkbox is enabled (preference persisted in `localStorage`). An unsaved-changes indicator warns before navigating away with unsaved edits.
