@@ -1,13 +1,19 @@
-import { all, ConfigOptions, create } from "mathjs";
+import { all, ConfigOptions, create, Parser } from "mathjs";
 import { setupUnits } from "./units.ts";
+import { formatOutput } from "./output.ts";
 
 const config: ConfigOptions = {
   number: "BigNumber",
   // Number of significant digits for BigNumbers
   // precision: 20
 };
-const math = create(all, config);
+export const math = create(all, config);
 setupUnits(math);
+
+export function evaluateLine(parser: Parser, line: string): unknown {
+  const transformed = transformLine(line);
+  return parser.evaluate(transformed);
+}
 
 export function evaluateLines(lines: string[]): string[] {
   const parser = math.parser();
@@ -18,19 +24,18 @@ export function evaluateLines(lines: string[]): string[] {
       results.push("");
       continue;
     }
-    const line = transformLine(lines[i]);
 
     try {
-      const r = parser.evaluate(line);
-      console.log(i, lines[i], line, r);
+      const r = evaluateLine(parser, lines[i]);
+      console.log(i, lines[i], r);
       if (r) {
-        results.push(math.format(r, { fraction: "decimal" }));
+        results.push(formatOutput(math, r));
       } else {
         results.push("");
       }
     } catch (e) {
       if (e instanceof Error) {
-        console.log(i, lines[i], line, e);
+        console.log(i, lines[i], e);
         results.push(e.message);
       } else {
         results.push("<unknown error>");
