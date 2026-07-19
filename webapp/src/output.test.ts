@@ -22,6 +22,11 @@ describe("formatOutput", () => {
     { input: "1234567890", expected: "1.234e+9" },
     { input: "12345678901", expected: "1.234e+10" },
     { input: "123456789012", expected: "1.234e+11" },
+    { input: "$5000", expected: "$5,000" },
+    { input: "$1234567", expected: "$1,234,567" },
+    { input: "$1234567890", expected: "$1.234e+9" },
+    { input: "1234567 kg", expected: "1,234,567 kg" },
+    { input: "$1234567/hour", expected: "$1,234,567 / hour" },
   ])("$input", ({ input, expected }) => {
     const parser = math.parser();
     const result = evaluateLine(parser, input);

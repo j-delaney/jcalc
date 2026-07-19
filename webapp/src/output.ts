@@ -40,6 +40,14 @@ export function formatOutput(math: MathJsInstance, result: unknown): string {
   // instanceof Unit fails here: `math` is its own instance from create(), so
   // its Unit class differs from the one exported by the mathjs module.
   if (math.isUnit(result)) {
+    // Format the numeric part with the same rules as bare numbers.
+    // toNumeric() is null for valueless units (e.g. a bare "hour").
+    const value = result.toNumeric();
+    if (math.isBigNumber(value)) {
+      return prefixCurrencySymbol(
+        `${formatBigNumber(value)} ${result.formatUnits()}`,
+      );
+    }
     return prefixCurrencySymbol(
       result.format({ fraction: "decimal", precision: DISPLAY_PRECISION }),
     );
