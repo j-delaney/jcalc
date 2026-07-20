@@ -1,6 +1,7 @@
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
 import { evaluateLines } from "./line.ts";
+import { DEFAULT_OUTPUT_SETTINGS, OutputSettings } from "./output.ts";
 
 // TODO: "as percent of"
 // TODO: "to percent"
@@ -11,15 +12,74 @@ const flask = new CodeFlask(".code-editor", {
   rightSidebar: true,
 });
 
+const OUTPUT_SETTINGS_KEY = "outputSettings";
+
+function loadOutputSettings(): OutputSettings {
+  const saved = localStorage.getItem(OUTPUT_SETTINGS_KEY);
+  if (!saved) {
+    return { ...DEFAULT_OUTPUT_SETTINGS };
+  }
+
+  try {
+    return { ...DEFAULT_OUTPUT_SETTINGS, ...JSON.parse(saved) };
+  } catch {
+    return { ...DEFAULT_OUTPUT_SETTINGS };
+  }
+}
+
+let outputSettings = loadOutputSettings();
+
+const settingsFields: {
+  key: keyof OutputSettings;
+  el: HTMLInputElement | null;
+}[] = [
+  {
+    key: "displayPrecision",
+    el: document.querySelector("#display-precision"),
+  },
+  {
+    key: "exponentThreshold",
+    el: document.querySelector("#exponent-threshold"),
+  },
+  {
+    key: "exponentDecimals",
+    el: document.querySelector("#exponent-decimals"),
+  },
+];
+
+settingsFields.forEach(({ key, el }) => {
+  if (!el) {
+    return;
+  }
+
+  el.value = outputSettings[key].toString();
+  el.addEventListener("change", () => {
+    const parsed = parseInt(el.value, 10);
+    outputSettings = {
+      ...outputSettings,
+      [key]: Number.isNaN(parsed) ? DEFAULT_OUTPUT_SETTINGS[key] : parsed,
+    };
+    el.value = outputSettings[key].toString();
+    localStorage.setItem(OUTPUT_SETTINGS_KEY, JSON.stringify(outputSettings));
+    renderOutput();
+  });
+});
+
+function renderOutput() {
+  evaluateLines(flask.getCode().split("\n"), outputSettings).forEach(
+    (result, i) => {
+      flask.elRightSidebarLines[i].innerText = result;
+    },
+  );
+}
+
 function saveCode() {
   window.location.hash = compress(flask.getCode());
   updateSaveButton();
 }
 
-flask.onUpdate((lines) => {
-  evaluateLines(lines).forEach((result, i) => {
-    flask.elRightSidebarLines[i].innerText = result;
-  });
+flask.onUpdate(() => {
+  renderOutput();
 
   const autosaveCheckbox = document.querySelector(
     "#autosave",

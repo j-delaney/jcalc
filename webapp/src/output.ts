@@ -1,8 +1,20 @@
 import { BigNumber, MathJsInstance } from "mathjs";
 
-// Significant digits shown to the user. Well below BigNumber's internal
-// precision (64), so artifacts like 5.000...002 display as 5.
-const DISPLAY_PRECISION = 14;
+export interface OutputSettings {
+  // Significant digits shown to the user. Well below BigNumber's internal
+  // precision (64), so artifacts like 5.000...002 display as 5.
+  displayPrecision: number;
+  // Magnitude at which numbers switch from comma-separated to exponential.
+  exponentThreshold: number;
+  // Decimal places of the mantissa in exponential notation ("1.234e+9").
+  exponentDecimals: number;
+}
+
+export const DEFAULT_OUTPUT_SETTINGS: OutputSettings = {
+  displayPrecision: 14,
+  exponentThreshold: 9,
+  exponentDecimals: 3,
+};
 
 // math.js renders currency as a suffix unit ("5 $ / hour"); display it in the
 // conventional prefix position ("$5 / hour"), keeping any sign in front.
@@ -12,10 +24,6 @@ function prefixCurrencySymbol(formatted: string): string {
   return formatted.replace(suffixCurrencyRegex, "$1$$$2");
 }
 
-// Magnitude at which numbers switch from comma-separated to exponential.
-const EXPONENT_THRESHOLD = 9;
-// Decimal places of the mantissa in exponential notation ("1.234e+9").
-const EXPONENT_DECIMALS = 3;
 // Decimal.ROUND_DOWN from decimal.js (mathjs's BigNumber backend): truncate
 // rather than round, so 1.23456789e9 displays as 1.234e+9.
 const ROUND_DOWN = 1;
@@ -26,17 +34,21 @@ function addThousandsSeparators(str: string): string {
   return fraction === undefined ? grouped : `${grouped}.${fraction}`;
 }
 
-function formatBigNumber(value: BigNumber): string {
-  if (value.e >= EXPONENT_THRESHOLD) {
-    return value.toExponential(EXPONENT_DECIMALS, ROUND_DOWN);
+function formatBigNumber(value: BigNumber, settings: OutputSettings): string {
+  if (value.e >= settings.exponentThreshold) {
+    return value.toExponential(settings.exponentDecimals, ROUND_DOWN);
   }
 
   return addThousandsSeparators(
-    value.toSignificantDigits(DISPLAY_PRECISION).toString(),
+    value.toSignificantDigits(settings.displayPrecision).toString(),
   );
 }
 
-export function formatOutput(math: MathJsInstance, result: unknown): string {
+export function formatOutput(
+  math: MathJsInstance,
+  result: unknown,
+  settings: OutputSettings = DEFAULT_OUTPUT_SETTINGS,
+): string {
   // instanceof Unit fails here: `math` is its own instance from create(), so
   // its Unit class differs from the one exported by the mathjs module.
   if (math.isUnit(result)) {
@@ -45,20 +57,23 @@ export function formatOutput(math: MathJsInstance, result: unknown): string {
     const value = result.toNumeric();
     if (math.isBigNumber(value)) {
       return prefixCurrencySymbol(
-        `${formatBigNumber(value)} ${result.formatUnits()}`,
+        `${formatBigNumber(value, settings)} ${result.formatUnits()}`,
       );
     }
     return prefixCurrencySymbol(
-      result.format({ fraction: "decimal", precision: DISPLAY_PRECISION }),
+      result.format({
+        fraction: "decimal",
+        precision: settings.displayPrecision,
+      }),
     );
   }
 
   if (math.isBigNumber(result)) {
-    return formatBigNumber(result);
+    return formatBigNumber(result, settings);
   }
 
   return math.format(result, {
     fraction: "decimal",
-    precision: DISPLAY_PRECISION,
+    precision: settings.displayPrecision,
   });
 }

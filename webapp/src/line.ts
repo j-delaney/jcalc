@@ -1,6 +1,10 @@
 import { all, ConfigOptions, create, Parser } from "mathjs";
 import { setupUnits } from "./units.ts";
-import { formatOutput } from "./output.ts";
+import {
+  DEFAULT_OUTPUT_SETTINGS,
+  formatOutput,
+  OutputSettings,
+} from "./output.ts";
 
 const config: ConfigOptions = {
   number: "BigNumber",
@@ -15,7 +19,10 @@ export function evaluateLine(parser: Parser, line: string): unknown {
   return parser.evaluate(transformed);
 }
 
-export function evaluateLines(lines: string[]): string[] {
+export function evaluateLines(
+  lines: string[],
+  settings: OutputSettings = DEFAULT_OUTPUT_SETTINGS,
+): string[] {
   const parser = math.parser();
   const results: string[] = [];
 
@@ -29,7 +36,7 @@ export function evaluateLines(lines: string[]): string[] {
       const r = evaluateLine(parser, lines[i]);
       console.log(i, lines[i], r);
       if (r) {
-        results.push(formatOutput(math, r));
+        results.push(formatOutput(math, r, settings));
       } else {
         results.push("");
       }
