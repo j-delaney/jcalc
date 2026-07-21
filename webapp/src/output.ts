@@ -52,16 +52,21 @@ export function formatOutput(
   // instanceof Unit fails here: `math` is its own instance from create(), so
   // its Unit class differs from the one exported by the mathjs module.
   if (math.isUnit(result)) {
+    // Simplify first: formatUnits() renders the unit list as-is (e.g. a
+    // result of "$/hour * hours" keeps separate "hour"/"hours" entries
+    // instead of cancelling them), unlike Unit.format() which simplifies
+    // internally.
+    const simplified = result.simplify();
     // Format the numeric part with the same rules as bare numbers.
     // toNumeric() is null for valueless units (e.g. a bare "hour").
-    const value = result.toNumeric();
+    const value = simplified.toNumeric();
     if (math.isBigNumber(value)) {
       return prefixCurrencySymbol(
-        `${formatBigNumber(value, settings)} ${result.formatUnits()}`,
+        `${formatBigNumber(value, settings)} ${simplified.formatUnits()}`,
       );
     }
     return prefixCurrencySymbol(
-      result.format({
+      simplified.format({
         fraction: "decimal",
         precision: settings.displayPrecision,
       }),

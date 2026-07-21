@@ -28,6 +28,7 @@ describe("formatOutput", () => {
     { input: "1234567 kg", expected: "1,234,567 kg" },
     { input: "5kg to g", expected: "5,000 g" },
     { input: "$1234567/hour", expected: "$1,234,567 / hour" },
+    { input: "$45/hour * 37.5 hours", expected: "$1,687.5" },
   ])("$input", ({ input, expected }) => {
     const parser = math.parser();
     const result = evaluateLine(parser, input);
