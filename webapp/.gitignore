@@ -134,6 +134,12 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # Optional stylelint cache
 .stylelintcache
 

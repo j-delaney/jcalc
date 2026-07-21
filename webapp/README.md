@@ -41,6 +41,7 @@ There's no backend. The editor's contents are compressed and stored in the URL h
 
 - `npm run dev` — build in watch mode and serve `public/` locally
 - `npm test` — run Jest unit tests
+- `npm run test:e2e` — build the app and run headless-browser tests (`e2e/`, via Playwright) against it
 - `npm run lint` / `npm run fmt` — ESLint / Prettier
 
 Rollup bundles `src/main.ts` (and `src/debug.ts`, a scratch entry point for manual testing) into `public/module/`, with mathjs and codeflask split into separate vendor chunks.

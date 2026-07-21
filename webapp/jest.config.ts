@@ -11,6 +11,9 @@ const config: Config = {
 
   // A preset that is used as a base for Jest's configuration
   preset: "ts-jest",
+
+  // e2e/ holds Playwright browser tests (run via `npm run test:e2e`), not Jest tests
+  testPathIgnorePatterns: ["/node_modules/", "<rootDir>/e2e/"],
 };
 
 export default config;

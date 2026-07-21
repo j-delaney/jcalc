@@ -1,5 +1,6 @@
 import CodeFlask from "codeflask";
 import { compress, decompress } from "./compress.ts";
+import { DEMO_SCRIPT } from "./demo.ts";
 import { evaluateLines } from "./line.ts";
 import { DEFAULT_OUTPUT_SETTINGS, OutputSettings } from "./output.ts";
 
@@ -135,6 +136,15 @@ function updateSaveButton() {
 
 document.querySelector("#save")?.addEventListener("click", () => {
   saveCode();
+});
+
+document.querySelector("#demo")?.addEventListener("click", () => {
+  if (
+    !hasUnsavedChanges() ||
+    confirm("Replace current editor contents with the demo?")
+  ) {
+    flask.updateCode(DEMO_SCRIPT);
+  }
 });
 
 window.addEventListener("beforeunload", (e) => {

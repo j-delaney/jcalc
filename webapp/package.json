@@ -9,7 +9,9 @@
     "fmt": "prettier . --write",
     "fmt-check": "prettier --check .",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "pretest:e2e": "npm run build",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "codeflask": "file:../CodeFlask",
@@ -19,6 +21,7 @@
   "devDependencies": {
     "@eslint/js": "^8.57.1",
     "@jest/globals": "^29.7.0",
+    "@playwright/test": "^1.61.1",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
