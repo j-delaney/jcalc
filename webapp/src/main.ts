@@ -139,10 +139,7 @@ document.querySelector("#save")?.addEventListener("click", () => {
 });
 
 document.querySelector("#demo")?.addEventListener("click", () => {
-  if (
-    !hasUnsavedChanges() ||
-    confirm("Replace current editor contents with the demo?")
-  ) {
+  if (confirm("Replace current editor contents with the demo?")) {
     flask.updateCode(DEMO_SCRIPT);
   }
 });
