@@ -10,6 +10,7 @@ test("Demo button fills the editor with a fully-evaluating example", async ({
 }) => {
   const textarea = page.locator(".codeflask__textarea");
 
+  page.once("dialog", (dialog) => dialog.accept());
   await page.locator("#demo").click();
 
   await expect(textarea).toHaveValue(DEMO_SCRIPT);
